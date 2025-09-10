@@ -2,7 +2,7 @@ import csv
 import subprocess
 import os
 
-csv_file = "taxid_to_accnum.csv"
+csv_file = "data/taxid_to_accnum.csv"
 output_dir = "downloads"
 
 os.makedirs(output_dir, exist_ok=True)
