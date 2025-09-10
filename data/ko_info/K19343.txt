@@ -1,0 +1,45 @@
+ENTRY       K19343                      KO
+SYMBOL      nirI
+NAME        NosR/NirI family transcriptional regulator, nitrite reductase regulator
+BRITE       KEGG Orthology (KO) [BR:ko00001]
+             09180 Brite Hierarchies
+              09182 Protein families: genetic information processing
+               03000 Transcription factors
+                K19343  nirI; NosR/NirI family transcriptional regulator, nitrite reductase regulator
+            Transcription factors [BR:ko03000]
+             Prokaryotic type
+              Other transcription factors
+               Others
+                K19343  nirI; NosR/NirI family transcriptional regulator, nitrite reductase regulator
+DBLINKS     COG: COG3901 COG0348
+GENES       AOL: S58_68220
+            RDE: RD1_1564(nosR)
+            RLI: RLO149_c031390(nirI)
+            RFU: ROLI_002090
+            DSH: Dshi_3181(nosR2)
+            SULI: C1J05_18600
+            PDE: Pden_2486
+            PARU: CYR75_02420
+            PAMN: pAMV3p0224(nirI)
+            PKD: F8A10_01620
+            PPAN: ESD82_11825
+            PSAN: HGN31_08515
+            PVER: E3U25_21685
+            PAEZ: PAE61_10390
+            PFEO: E3U26_09955
+            PSEB: EOK75_11565
+            PGV: SL003B_0577(nosR2)
+            THAS: C6Y53_13635
+            RHP: LPB142_12530
+REFERENCE   PMID:10540283
+  AUTHORS   Saunders NF, Houben EN, Koefoed S, de Weert S, Reijnders WN, Westerhoff HV, De Boer AP, Van Spanning RJ
+  TITLE     Transcription regulation of the nir gene cluster encoding nitrite reductase of Paracoccus denitrificans involves NNR and NirI, a novel type of membrane protein.
+  JOURNAL   Mol Microbiol 34:24-36 (1999)
+            DOI:10.1046/j.1365-2958.1999.01563.x
+REFERENCE   PMID:7747927
+  AUTHORS   de Boer AP, Reijnders WN, Kuenen JG, Stouthamer AH, van Spanning RJ
+  TITLE     Isolation, sequencing and mutational analysis of a gene cluster involved in nitrite reduction in Paracoccus denitrificans.
+  JOURNAL   Antonie Van Leeuwenhoek 66:111-27 (1994)
+            DOI:10.1007/BF00871635
+  SEQUENCE  [pde:Pden_2486]
+///

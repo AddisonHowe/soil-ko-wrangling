@@ -1,0 +1,137 @@
+ENTRY       K17877                      KO
+SYMBOL      NIT-6
+NAME        nitrite reductase (NAD(P)H) [EC:1.7.1.4]
+PATHWAY     map00910  Nitrogen metabolism
+            map01100  Metabolic pathways
+            map01120  Microbial metabolism in diverse environments
+            map01310  Nitrogen cycle
+MODULE      M00531  Assimilatory nitrate reduction, nitrate => ammonia
+REACTION    R00787  ammonia:NAD+ oxidoreductase
+            R00789  ammonia:NADP+ oxidoreductase
+BRITE       KEGG Orthology (KO) [BR:ko00001]
+             09100 Metabolism
+              09102 Energy metabolism
+               00910 Nitrogen metabolism
+                K17877  NIT-6; nitrite reductase (NAD(P)H)
+            Enzymes [BR:ko01000]
+             1. Oxidoreductases
+              1.7  Acting on other nitrogenous compounds as donors
+               1.7.1  With NAD+ or NADP+ as acceptor
+                1.7.1.4  nitrite reductase [NAD(P)H]
+                 K17877  NIT-6; nitrite reductase (NAD(P)H)
+DBLINKS     GO: 0008942
+GENES       DHA: DEHA2G21890g
+            BBRX: BRETT_005342
+            OPA: HPODL_02386
+            NCR: NCU04720(nit-6)
+            NTE: NEUTE1DRAFT87025(NEUTE1DRAFT_87025)
+            SMP: 10805178(SMAC4_03842)
+            PAN: PODANSg3187
+            PBEL: QC761_406800(NIT6)
+            PPSD: QC762_406800(NIT6)
+            PPSP: QC763_406800(NIT6)
+            PPSA: QC764_406800(NIT6)
+            TTT: THITE_2110175
+            MTM: MYCTH_2306799
+            CTHR: CTHT_0041190
+            RTHE: 98126742(VTJ83DRAFT_5492)
+            MGR: MGG_00634
+            PPEI: PpBr36_08516
+            PGRI: PgNI_08684
+            TMN: UCRPA7_4641
+            SSCK: SPSK_02946
+            FGR: FGSG_08402
+            FPU: FPSE_09019
+            FPOA: FPOAC1_004501
+            FVN: FVRRES_05001
+            FVR: FVEG_02069
+            FOX: FOXG_03192
+            NHE: NECHADRAFT_77775
+            FFC: NCS54_00388600
+            FKR: NCS57_00393600
+            FMU: J7337_008414
+            TRE: TRIREDRAFT_69291
+            TRR: M419DRAFT_13349
+            TATV: 25778834(TrAtP1_010555)
+            TASP: 36617469(TrAFT101_010745)
+            MAW: 19247804(NIT6_2)
+            MAJ: MAA_02214
+            MBRN: 26239792(nit-6)
+            PCHM: VFPPC_13090
+            AMUS: LMH87_009083
+            PLJ: 28884883(PLICBS_006083)
+            PTKZ: JDV02_008480(NIT6)
+            VAL: VDBG_08065
+            VDA: VDAG_01561
+            CFJ: CFIO01_11897
+            CLUP: CLUP02_00460
+            CHIG: CH63R_08030
+            CDET: 87945256(CDEST_08753)
+            SAPO: SAPIO_CDS10292
+            ELA: UCREL1_8516
+            PFY: PFICI_14163
+            SSL: SS1G_04479
+            BFU: BCIN_01g05790(BcniiA)
+            PSCO: LY89DRAFT_578424 LY89DRAFT_582902
+            GLZ: GLAREA_07493
+            ANI: ANIA_01007(niiA)
+            AFM: AFUA_1G12840
+            ACT: ACLA_022630
+            NFI: NFIA_012720
+            AOR: AO090012000624
+            ANG: An08g05640
+            AFV: AFLA_002347
+            ALUC: AKAW2_30507A
+            ACHE: ACHE_30394S
+            APUU: APUU_50779A
+            PCS: N7525_003047
+            PDP: PDIP_28110
+            POU: POX_c03829
+            TMF: EYB26_002967
+            TRG: TRUGW13939_09493
+            PNO: SNOG_06023
+            PTE: PTT_08193
+            PTRR: 6343218(PtrM4_119680)
+            BZE: COCCADRAFT_6545
+            BSC: COCSADRAFT_162163
+            BOR: COCMIDRAFT_37533
+            AALT: CC77DRAFT_937904
+            ADAC: 96086161(ACET3X_005839)
+            ARAB: EKO05_0000745
+            ZTR: MYCGRDRAFT_76215
+            PFJ: MYCFIDRAFT_186832
+            FFU: CLAFUR5_02626
+            CBET: CB0940_03120
+            BCOM: BAUCODRAFT_476493
+            NPA: UCRNP2_1294
+            TML: GSTUM_00010229001
+            KMG: 30165491(I203_101626)
+            KDJ: 28966875(I303_103155)
+            KBI: 30205504(I302_102415)
+            KPIN: 30176036(I206_102297)
+            KER: 91102327(V865_003524)
+            TVS: TRAVEDRAFT_112003
+            DSQ: DICSQDRAFT_182461
+            PCO: PHACADRAFT_182112
+            SHS: STEHIDRAFT_171639
+            HIR: HETIRDRAFT_104673
+            PSQ: PUNSTDRAFT_98111
+            GTR: GLOTRDRAFT_45467
+            RSX: RhiXN_02367
+            LBC: LACBIDRAFT_291348
+            CCI: CC1G_07228
+            MRR: Moror_15985
+            SLA: SERLADRAFT_449021(NiR)
+            UMA: UMAG_11104
+            PFP: PFL1_06434
+            SGRA: EX895_001278
+            RIE: OCT59_003012 OCT59_019790
+            PIF: PITG_13013
+            PSOJ: PHYSODRAFT_317690
+REFERENCE   PMID:8096840
+  AUTHORS   Exley GE, Colandene JD, Garrett RH
+  TITLE     Molecular cloning, characterization, and nucleotide sequence of nit-6, the structural gene for nitrite reductase in Neurospora crassa.
+  JOURNAL   J Bacteriol 175:2379-92 (1993)
+            DOI:10.1128/JB.175.8.2379-2392.1993
+  SEQUENCE  [ncr:NCU04720]
+///

@@ -1,0 +1,88 @@
+ENTRY       K15877                      KO
+SYMBOL      CYP55
+NAME        fungal nitric oxide reductase [EC:1.7.1.14]
+PATHWAY     map00910  Nitrogen metabolism
+            map01100  Metabolic pathways
+            map01120  Microbial metabolism in diverse environments
+REACTION    R02492  nitrous-oxide:NAD+ oxidoreductase
+            R09446  nitrous-oxide:NADP+ oxidoreductase
+            R09808  
+            R09809  
+BRITE       KEGG Orthology (KO) [BR:ko00001]
+             09100 Metabolism
+              09102 Energy metabolism
+               00910 Nitrogen metabolism
+                K15877  CYP55; fungal nitric oxide reductase
+             09180 Brite Hierarchies
+              09181 Protein families: metabolism
+               00199 Cytochrome P450
+                K15877  CYP55; fungal nitric oxide reductase
+            Enzymes [BR:ko01000]
+             1. Oxidoreductases
+              1.7  Acting on other nitrogenous compounds as donors
+               1.7.1  With NAD+ or NADP+ as acceptor
+                1.7.1.14  nitric oxide reductase [NAD(P)+, nitrous oxide-forming]
+                 K15877  CYP55; fungal nitric oxide reductase
+            Cytochrome P450 [BR:ko00199]
+             Cytochrome P450, fungi type
+              CYP55 family
+               K15877  CYP55; fungal nitric oxide reductase
+DBLINKS     GO: 0016966
+GENES       YBA: 132564660
+            CRE: CHLRE_01g007950v5
+            CVR: CHLNCDRAFT_51513
+            NCR: NCU06137
+            NTE: NEUTE1DRAFT117740(NEUTE1DRAFT_117740)
+            SMP: 10802033(SMAC4_06378)
+            PAN: PODANSg1411
+            PBEL: QC761_512910
+            PPSD: QC762_512910
+            PPSP: QC763_512910
+            PPSA: QC764_512910
+            TTT: THITE_2117644
+            RTHE: 98124689(VTJ83DRAFT_3644)
+            FGR: FGSG_11585
+            FVR: FVEG_10773
+            FOX: FOXG_12350
+            NHE: NECHADRAFT_41997 NECHADRAFT_89386 NECHADRAFT_97205
+            FFC: NCS54_00765400 NCS54_01319500 NCS54_01471300
+            FKR: NCS57_00805400 NCS57_01306900
+            FMU: J7337_013364
+            TASP: 36608038(TrAFT101_002293)
+            MAW: 19244581(J3458_005026) 19250043(J3458_019394)
+            MAJ: MAA_08207 MAA_08689
+            MBRN: 26246490(CYP55A2_1) 26246605(G6M90_00g067390)
+            PLJ: 28888079(PLICBS_003292)
+            PTKZ: JDV02_000549
+            CFJ: CFIO01_11821
+            CLUP: CLUP02_12747
+            SAPO: SAPIO_CDS4621
+            SSL: SS1G_00406
+            MBE: MBM_04680
+            PSCO: LY89DRAFT_614822
+            GLZ: GLAREA_09633
+            AOR: AO090166000070
+            ANG: An07g08930
+            AFV: AFLA_011427
+            URE: UREG_06342
+            ABE: ARB_00546
+            TVE: TRV_00378
+            PBL: PAAG_02515
+            PBN: PADG_05660
+            AJE: HCAG_02570
+            BGH: BDBG_08235
+            BSC: COCSADRAFT_355241
+            TASA: A1Q1_03733
+            CCAC: CcaHIS019_0312330(CcaverHIS019_0312330)
+            AG: AAA33337(CYP55A1)
+REFERENCE   PMID:2037602 (CYP55A1)
+  AUTHORS   Kizawa H, Tomura D, Oda M, Fukamizu A, Hoshino T, Gotoh O, Yasui T, Shoun H
+  TITLE     Nucleotide sequence of the unique nitrate/nitrite-inducible cytochrome P-450 cDNA from Fusarium oxysporum.
+  JOURNAL   J Biol Chem 266:10632-7 (1991)
+  SEQUENCE  [ag:AAA33337]
+REFERENCE   PMID:18433626
+  AUTHORS   Zhang L, Shoun H
+  TITLE     Purification and functional analysis of fungal nitric oxide reductase cytochrome P450nor.
+  JOURNAL   Methods Enzymol 437:117-33 (2008)
+            DOI:10.1016/S0076-6879(07)37007-9
+///

@@ -1,0 +1,114 @@
+ENTRY       K04747                      KO
+SYMBOL      norF
+NAME        nitric oxide reductase NorF protein
+REACTION    R00294  nitrous-oxide:ferricytochrome-c oxidoreductase
+BRITE       KEGG Orthology (KO) [BR:ko00001]
+             09190 Not Included in Pathway or Brite
+              09191 Unclassified: metabolism
+               99982 Energy metabolism
+                K04747  norF; nitric oxide reductase NorF protein
+GENES       PSZ: PSTAB_3507(nirP)
+            PSC: A458_03780
+            PSJ: PSJM300_03255
+            PSH: Psest_0812
+            PSTU: UIB01_03590
+            PSED: DM292_01510
+            HYC: E5678_09425
+            THU: AC731_006255
+            THK: CCZ27_06830
+            MESS: ABSY17_01135
+            AAK: AA2016_5066 AA2016_6074
+            AMIH: CO731_02674
+            SMD: Smed_6290
+            SFH: SFHH103_00919
+            SFD: USDA257_c38430
+            SAME: SAMCFNEI73_Ch1303(norF)
+            SINO: SS05631_a44030
+            EAK: EKH55_5508
+            EMX: FKV68_33345
+            STEG: QA637_20075
+            SCHP: RB548_31920
+            EAH: FA04_23640
+            ECAA: J3R84_34650
+            ENP: JVX98_00360
+            ATU: Atu8197(norF)
+            ATA: AWN88_04625
+            AGC: BSY240_101
+            AGT: EYD00_24620
+            ASAL: CFBP5507_17335
+            RIR: BN877_p0537
+            ACUC: KZ699_21935
+            ALEG: CFBP4996_23220
+            REL: REMIM1_PF00204
+            RGA: RGR602_PC02098
+            RPHA: AMC79_PA00180
+            RHV: BA939_19725
+            RGR: FZ934_20395
+            ARO: B0909_15935
+            RHIA: ACO34A_20055
+            RHIY: BLX90_23860
+            NGL: RG1141_CH34800
+            NGG: RG540_CH35560
+            NPM: QEO92_30540
+            RHT: NT26_3642
+            RFV: RFYW14_03533
+            SHZ: shn_16575
+            BME: BMEII1000
+            BMEL: DK63_2256
+            BMI: BMEA_B0248
+            BMZ: BM28_B0238(norF)
+            BMG: BM590_B0238(norF)
+            BMW: BMNI_II0234
+            BMEE: DK62_3151
+            BMF: BAB2_0956(norF)
+            BMB: BruAb2_0932(norF)
+            BMC: BAbS19_II08850
+            BAA: BAA13334_II01703
+            BABO: DK55_2899
+            BABR: DO74_2214
+            BABT: DK49_2340
+            BABB: DK48_2898
+            BABU: DK53_2902
+            BABS: DK51_2388
+            BABC: DO78_2155
+            BMS: BRA0247(norF)
+            BSI: BS1330_II0244(norF)
+            BSF: BSS2_II0233(norF)
+            BSUI: BSSP1_II0210
+            BSUP: BSPT1_II0210
+            BSUV: BSPT2_II0211
+            BSUC: BSSP2_II0215
+            BMT: BSUIS_B0252
+            BSZ: DK67_2266
+            BSV: BSVBI22_B0243(norF)
+            BSW: IY71_12305
+            BSG: IY72_11845
+            BOV: BOV_A0223(norF)
+            BCS: BCAN_B0248
+            BSK: BCA52141_II0850
+            BOL: BCOUA_II0247(norF)
+            BCAR: DK60_3120
+            BCAS: DA85_11685
+            BMR: BMI_II241(norF)
+            BPP: BPI_II242(norF)
+            BPV: DK65_2230
+            BCET: V910_200965
+            BCEE: V568_201122
+            BRU: BFS01_14860
+            BRJ: BKD03_05185
+            OIN: IAR37_07330
+            BIO: BR141012304_20709(norF)
+            OAN: Oant_4385
+            OAH: DR92_3859
+            OPS: A8A54_10780
+            BPSN: NIK97_01650
+            BRUC: LJ361_11555
+            BRUB: GRI33_12890
+            OCR: HGK82_15050
+            OCL: GTN27_13005
+            OCC: KMS41_18745
+            OCH: CES85_5159
+            RPE: RPE_0623
+            RPT: Rpal_1640
+            RPX: Rpdx1_4066
+///
