@@ -27,17 +27,19 @@ Our approach is outlined as follows:
 ## Environment setup
 
 ```bash
-conda create -n bioenv
+conda create -n ncbienv
 ```
 
 ```bash
-conda create -n ncbienv
+conda create -n bioenv
 ```
 
 ## Full pipeline commands
 
+The full processing pipeline is contained in and can be run by executing the following script:
+
 ```bash
-# Contained in: scripts/run_full_pipeline.sh
+./scripts/run_full_pipeline.sh
 ```
 
 ## Processing steps
@@ -253,7 +255,10 @@ Our goal now is to compute for each sample the average depth of rejected reads m
 The following script performs this computation per sample, merging results for every contaminant genome into a single file per sample.
 
 ```bash
-python scripts/compute_region_counts.py
+python scripts/compute_region_counts.py \
+    -r out/identified_regions \
+    -o out/ko_expression \
+    --coverage_dir data/coverage_arrays
 ```
 
 The resulting file is of the form shown below.
@@ -261,7 +266,7 @@ Each row corresponds to a region of interest identified within one of the contam
 It provides the start and stop position on the contaminant genome, the sequence length, average read depth, and max depth.
 
 ```text
-# Example file: out/regions/coverage_Soil3_CE_239_-7_CHL_T9.csv
+# Example file: out/ko_expression/coverage_Soil3_CE_239_-7_CHL_T9.csv
 
 taxid,ko,name,start,stop,seq_length,avg_depth,max_depth,desc
 267608,K15864,WP_011004281.1,1244384,1244995,611,1.0,1.0,ID=cds-WP_011004281.1...
@@ -284,7 +289,7 @@ We now consider approaches for downstream analysis of these files.
 For any given sample, we can now specify a contaminant genome, and query the average depth of reads at any of the regions of interest that were associated with a KO.
 
 ```txt
-# Example lines from file out/regions/coverage_Soil3_CE_239_-7_CHL_T9.csv
+# Example lines from file out/ko_expression/coverage_Soil3_CE_239_-7_CHL_T9.csv
 
 267608,K15864,WP_011004281.1,1244384,1244995,611,1.0,1.0,ID=cds-WP_011004281.1...
 267608,K15864,WP_043876895.1,1884433,1885926,1493,10.969859343603483,30.0,"ID=...
@@ -292,7 +297,4 @@ For any given sample, we can now specify a contaminant genome, and query the ave
 ```
 
 For example, the lines indicate that for this specific sample, taxon 267608 had an average of 10.97 reads mapped to the 1493-length gene associated with the ID `WP_043876895.1`, which was associated to the KO K15864.
-
-The question now is how one should go about compiling this data.
-We want to show samples individually, and elucidate how the rejected reads map to the contaminant genomes.
 
