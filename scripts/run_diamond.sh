@@ -29,4 +29,5 @@ diamond blastp \
     --out "${outdir}/${outfname}" \
     --outfmt 6 \
     --evalue 1e-5 \
-    --max-target-seqs 1
+    --max-target-seqs 1 \
+    --quiet
