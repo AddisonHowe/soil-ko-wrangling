@@ -12,5 +12,5 @@ awk -F ','  'NR > 1 { print $0 }' data/taxid_to_accnum.csv | while IFS=',' read 
     echo $taxid $accnum
     f=${genomesdir}/${taxid}/ncbi_data/${accnum}/protein.faa
     subdir=${taxid}
-    diamond makedb --in "$f" -d "${outdir}/${subdir}"
+    diamond makedb --in "$f" -d "${outdir}/${subdir}" --quiet
 done

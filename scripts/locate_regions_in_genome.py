@@ -28,8 +28,9 @@ def main(args):
     outdir = args.outdir
     verbosity = args.verbosity
 
-    print(f"TAXID: {taxid}")
-    print(f"diamond results: {diamond_fpath}")
+    if verbosity:
+        print(f"TAXID: {taxid}")
+        print(f"diamond results: {diamond_fpath}")
 
     df = pd.read_csv(
         diamond_fpath,
@@ -40,14 +41,17 @@ def main(args):
     # Subset data to taxid of interest.
     df = df[df["taxid"] == taxid]
 
-    print(df)
+    if verbosity > 1:
+        print(df)
 
     # Build map from KO to regions ids
     ko_to_region_ids = {}
     for ko in df["ko"].unique():
-        print(ko)
+        if verbosity > 1:
+            print(ko)
         ko_to_region_ids[ko] = df[df["ko"] == ko]["sseqid"].unique()
-    print(ko_to_region_ids)
+    if verbosity > 1:
+        print(ko_to_region_ids)
     os.makedirs(outdir, exist_ok=True)
     
     identified_regions_by_ko = {ko: [] for ko in ko_to_region_ids}

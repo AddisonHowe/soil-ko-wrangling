@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-OUTFPATH = "out/dmnd_combined_best_match.tsv"
+OUTFPATH = "out/dmnd_combined_top_hits.tsv"
 DMD_RES_COMBINED_FPATH = "out/dmnd_combined.tsv"
 
 DF = pd.read_csv(

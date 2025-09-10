@@ -1,8 +1,13 @@
 # Project specific
+out/
 .vscode/
 delme.py
 delme.sh
 **/.DS_Store
+deprecated/
+data/coverage_arrays/
+data/genomes/
+TODO.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

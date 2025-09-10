@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-outdirbase=out/diamond_res_uniq
+indir="out/diamond_res"
+outdirbase=out/diamond_hits
+
 mkdir -p $outdirbase
-for ko in $(ls out/diamond_res); do
+for ko in $(ls ${indir}); do
     echo $ko
     outdir=${outdirbase}/${ko}
     mkdir -p $outdir
-    for resfile in out/diamond_res/$ko/*.tsv; do
+    for resfile in ${indir}/$ko/*.tsv; do
         base=$(basename $resfile .tsv)
         taxid=${base/_hits/}
         echo "Finding unique sequence hits for $ko (taxid=$taxid)"

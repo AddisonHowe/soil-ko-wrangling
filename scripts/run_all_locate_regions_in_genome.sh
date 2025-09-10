@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-outdir="out/identified_regions_best_match"
-diamond_res_fpath="out/dmnd_combined_best_match.tsv"
+outdir="out/identified_regions"
+diamond_res_fpath="out/dmnd_combined_top_hits.tsv"
 
 awk -F ','  'NR > 1 { print $0 }' data/taxid_to_accnum.csv | while IFS=',' read -r taxid accnum; do
     echo $taxid $accnum
