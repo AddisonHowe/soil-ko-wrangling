@@ -61,11 +61,6 @@ Next, we extract from each of the `cds_from_genomic.fna` files a list of the CDS
 sh scripts/extract_genome_cds_and_proteins.sh
 ```
 
-<!-- With these, we can now check to see which genes, based on search keys, are found in each genome.
-Running the script `search_genome.sh` will produce a number of csv files, with the results of searching each individual genome for the specified genes.
-Once we run this on each individual genome, we want to merge the results into a single table, where the rows correspond to each scaffold, and columns correspond to searches. -->
-
-
 ### Step 1: Downloading KO sets
 
 Our KOs of interest are listed in the file `data/ko_list.txt`.
@@ -120,6 +115,12 @@ for ko in $(ls data/kos); do
     cat data/kos/$ko/${ko}_rep.faa >> data/all_kos_rep.faa
 done
 awk -F' ' '/^>/ {print substr($1,2), $2}' data/all_kos_rep.faa > data/seqid_to_ko.txt
+```
+
+The script `scripts/build_ko_info.py` produces a tsv file `data/ko_information.tsv` with information compiled from the fetches KO files.
+
+```bash
+python scripts/build_ko_info_file.py -i data/ko_list.txt -d data/ko_info -o data/ko_information.tsv
 ```
 
 ### Step 2: KO annotation of contaminant genomes with `diamond`
