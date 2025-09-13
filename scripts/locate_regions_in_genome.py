@@ -8,6 +8,10 @@ import pandas as pd
 ANNOTATION_DESC_COL = 8
 ANNOTATION_KEY_OF_INTEREST = "Name"
 
+ANNOTATION_KEY_OF_INTEREST_OVERRIDE = {
+    1: "ID",
+}
+
 
 def parse_args(args):
     parser = argparse.ArgumentParser()
@@ -27,6 +31,10 @@ def main(args):
     diamond_fpath = args.diamond_fpath
     outdir = args.outdir
     verbosity = args.verbosity
+
+    annotation_key = ANNOTATION_KEY_OF_INTEREST_OVERRIDE.get(
+        taxid, ANNOTATION_KEY_OF_INTEREST
+    )
 
     if verbosity:
         print(f"TAXID: {taxid}")
@@ -67,9 +75,12 @@ def main(args):
             desc_items = desc_str.split(";")
             d = {k: v for k, v in [item.split("=") for item in desc_items]}
             # Get the key `name` and check if it's one of the sequence ids
-            if ANNOTATION_KEY_OF_INTEREST not in d:
+            if annotation_key not in d:
                 continue
-            name = d[ANNOTATION_KEY_OF_INTEREST]
+            name = d[annotation_key]
+            if taxid == 2849180:
+                name += ":" + row[0]
+                print(name)
             for ko in ko_to_region_ids:
                 if name in ko_to_region_ids[ko]:
                     start = row[3]

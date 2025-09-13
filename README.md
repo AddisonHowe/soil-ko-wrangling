@@ -55,6 +55,98 @@ python scripts/download_genomes.py
 sh scripts/move_downloaded_data.sh
 ```
 
+#### Caveats
+##### Caveat 1: E. coli spike-in
+
+The spike-in genomes must be handled slightly differently, before proceeding.
+For the first spike-in, a strain of E. coli, we will use the genome and annotation provided by Kiseok.
+We store this in the `data/genome` directory, mimicking the structure of the NCBI downloads:
+
+```text
+genomes/
+└── 1/  <--  arbitrary taxid for custom E. coli strain
+    └── ncbi_data/
+       └── GCF_000000000.1/  <-- arbitrary name to match structure
+           ├── cds_from_genomic.fna  <-- Lee_A8Q_1_polished.ffn
+           ├── genomic.gff  <-- Lee_A8Q_1_polished.gff3
+           └── protein.faa  <-- Lee_A8Q_1_polished.faa
+```
+
+
+##### Caveat 2: Parabacteroides spike-in
+
+For the second spike-in of Parabacteroides sp. MSK.9.14, we find the taxid 2849180 and acquire the genome annotation from NCBI, as for the other contaminant genomes.
+However, in the basecoverage files, this genome is referenced through multiple scaffolds instead of just a single scaffold, as is the case for the other contaminant genomes.
+If we check the coverage files for this spike-in, we see something like
+
+```txt
+# zcat < 53004.7.525186.AATTAGATTG-GCATTTAGCG.sam.pileup.basecov.gz | grep "NZ_JAHPXO010000???.1_Parabacteroides_sp"
+
+NZ_JAHPXO010000001.1_Parabacteroides_sp._MSK.9.14   0   24
+NZ_JAHPXO010000001.1_Parabacteroides_sp._MSK.9.14   1   24
+NZ_JAHPXO010000001.1_Parabacteroides_sp._MSK.9.14   2   24
+...
+NZ_JAHPXO010000001.1_Parabacteroides_sp._MSK.9.14   336656   17
+NZ_JAHPXO010000001.1_Parabacteroides_sp._MSK.9.14   336657   16
+NZ_JAHPXO010000002.1_Parabacteroides_sp._MSK.9.14   0   13
+NZ_JAHPXO010000002.1_Parabacteroides_sp._MSK.9.14   1   13
+NZ_JAHPXO010000002.1_Parabacteroides_sp._MSK.9.14   2   13
+...
+NZ_JAHPXO010000002.1_Parabacteroides_sp._MSK.9.14   258623   10
+NZ_JAHPXO010000002.1_Parabacteroides_sp._MSK.9.14   258624   10
+```
+
+For the other contaminant genomes, as well as the E. coli spike-in, we store the base coverage information in numpy archives `data/coverage_arrays/coverage_arrays_<sample_id>.npz` where the archive has a key for every contaminant genome scaffold name.
+For this spike-in, however, we store the basecoverage information for each individual scaffold (1 through 153) as `data/coverage_arrays_parabacteroides/coverage_arrays_<sample_id>.npz`.
+The differences are demonstrated below:
+
+```python
+import numpy as np
+arrs = np.load("data/coverage_arrays/coverage_arrays_Soil3_CE_239_-7_CHL_T9.npz")
+arrs_para = np.load("data/coverage_arrays_parabacteroides/coverage_arrays_Soil3_CE_239_-7_CHL_T9.npz")
+
+print("standard contaminant coverage keys:")
+for k in list(arrs.keys())[0:5]:
+    print(k)
+print("parabacteroides coverage keys:")
+for k in list(arrs_para.keys())[0:5]:
+    print(k)
+```
+
+Running this code chunk will result in
+
+```txt
+standard contaminant coverage keys:
+
+Lee_A8Q_1_Ecoli_contig_1_polypolish
+Ralstonia_solanacearum_strain_KACC_10722
+CP013959.1_Staphylococcus_aureus_strain_V605
+NC_003902.1_Xanthomonas_campestris_pv._campestris_str._ATCC_33913
+NC_003295.1_Ralstonia_solanacearum_GMI1000
+...
+
+parabacteroides coverage keys:
+
+NZ_JAHPXO010000099.1_Parabacteroides_sp._MSK.9.14
+NZ_JAHPXO010000100.1_Parabacteroides_sp._MSK.9.14
+NZ_JAHPXO010000101.1_Parabacteroides_sp._MSK.9.14
+NZ_JAHPXO010000102.1_Parabacteroides_sp._MSK.9.14
+NZ_JAHPXO010000103.1_Parabacteroides_sp._MSK.9.14
+...
+```
+
+So, in order to handle this, we run the script
+
+```bash
+./scripts/modify_parabact_gff.sh
+```
+
+which will produce a file `data/genomes/2849180/protein_to_scaffold.tsv` that maps the protein names to their scaffold ID, and then modify the `protein.faa` file so that the new protein names are of the form `<gene_id>:<scaffold_id>`.
+This will eventually allow us to obtain the specific scaffold key from a protein name.
+
+
+### Continuing on
+
 Next, we extract from each of the `cds_from_genomic.fna` files a list of the CDS names, and from each of the `protein.faa` files a list of the protein names.
 
 ```bash

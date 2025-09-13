@@ -10,7 +10,7 @@ DF = pd.read_csv(
     sep="\t"
 )
 
-print(DF)
+# print(DF)
 
 
 def find_top_hit(df):
@@ -29,7 +29,7 @@ def find_top_hit(df):
 
 df_list = []
 for taxid in DF["taxid"].unique():
-    print(f"Subsetting taxum {taxid}")
+    # print(f"Subsetting taxum {taxid}")
     taxdf = DF[DF["taxid"] == taxid]
     ko_counts_by_geneid = taxdf.groupby("sseqid")["ko"].nunique()
     uniques = ko_counts_by_geneid[ko_counts_by_geneid == 1]
@@ -52,7 +52,7 @@ for taxid in DF["taxid"].unique():
 
 dfout = pd.DataFrame(df_list)
 
-print(dfout)
+# print(dfout)
 
 dfout.to_csv(
     OUTFPATH,

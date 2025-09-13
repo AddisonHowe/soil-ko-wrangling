@@ -6,6 +6,7 @@ delme.sh
 **/.DS_Store
 deprecated/
 data/coverage_arrays/
+data/coverage_arrays_parabacteroides/
 data/genomes/
 TODO.md
 

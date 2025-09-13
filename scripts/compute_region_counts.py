@@ -7,6 +7,7 @@ import time
 
 REGIONS_DIR = "out/identified_regions"
 COVERAGE_DIR = "data/coverage_arrays"
+COVERAGE_DIR_PARA = "data/coverage_arrays_parabacteroides"
 TAXID_TO_ACCREF_FPATH = "data/taxid_to_accnum.csv"
 TAXID_TO_SCAFFOLD_FPATH = "data/taxid_to_scaffold.csv"
 
@@ -16,12 +17,14 @@ def parse_args(args):
     parser.add_argument("-r", "--regions_dir", type=str, default=REGIONS_DIR)
     parser.add_argument("-o", "--outdir", type=str, default="out/regions")
     parser.add_argument("--coverage_dir", type=str, default=COVERAGE_DIR)
+    parser.add_argument("--para_coverage_dir", type=str, default=COVERAGE_DIR_PARA)
     return parser.parse_args(args)
 
 
 def main(args):
     outdir = args.outdir
     coverage_dir = args.coverage_dir
+    coverage_dir_para = args.para_coverage_dir
     region_tables_dir = args.regions_dir
 
     # Get list of samples
@@ -63,9 +66,11 @@ def main(args):
     for coverage_array in tqdm.tqdm(sample_filelist):
         sample = coverage_array.removeprefix("coverage_arrays_").removesuffix(".npz")
         coverage_arrs = np.load(os.path.join(coverage_dir, coverage_array))
+        coverage_arrs_para = np.load(os.path.join(coverage_dir_para, coverage_array))
         df = construct_df_for_sample(
             taxid_to_region_table,
             coverage_arrs,
+            coverage_arrs_para,
             taxid_to_scaffold,
         )
         df.to_csv(f"{outdir}/coverage_{sample}.csv", index=False)
@@ -73,9 +78,14 @@ def main(args):
     print("Done!")
 
 
+def is_parabactereoid(taxid):
+    return taxid == 2849180
+
+
 def construct_df_for_sample(
     taxid_to_region_table,
     coverage_arrs,
+    coverage_arrs_para,
     taxid_to_scaffold_map,
 ):
     dfs = []
@@ -83,19 +93,34 @@ def construct_df_for_sample(
         df0 = taxid_to_region_table[taxid].copy()
         df0["avg_depth"] = -1
         df0["max_depth"] = -1
-        arr_key = taxid_to_scaffold_map[taxid]
-        avg_depth = -np.ones(len(df0))
-        max_depth = -np.ones(len(df0))
-        if not pd.isna(arr_key):
-            base_coverage = coverage_arrs[arr_key]
+        if is_parabactereoid(taxid):
+            avg_depth = -np.ones(len(df0))
+            max_depth = -np.ones(len(df0))
             for i, (idx, row) in enumerate(df0.iterrows()):
+                arr_key = row["name"].split(":")[1] + "_Parabacteroides_sp._MSK.9.14"
+                base_coverage = coverage_arrs_para[arr_key]
                 start, stop = row[["start", "stop"]]
                 x = base_coverage[start:stop]
                 avg_depth[i] = x.mean()
                 max_depth[i] = x.max()
             df0["avg_depth"] = avg_depth
             df0["max_depth"] = max_depth
-        dfs.append(df0)
+            dfs.append(df0)
+
+        else:
+            arr_key = taxid_to_scaffold_map[taxid]
+            avg_depth = -np.ones(len(df0))
+            max_depth = -np.ones(len(df0))
+            if not pd.isna(arr_key):
+                base_coverage = coverage_arrs[arr_key]
+                for i, (idx, row) in enumerate(df0.iterrows()):
+                    start, stop = row[["start", "stop"]]
+                    x = base_coverage[start:stop]
+                    avg_depth[i] = x.mean()
+                    max_depth[i] = x.max()
+                df0["avg_depth"] = avg_depth
+                df0["max_depth"] = max_depth
+            dfs.append(df0)
     sample_df = pd.concat(dfs)
     sample_df["desc"] = sample_df.pop("desc")
     return sample_df

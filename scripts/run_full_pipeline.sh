@@ -112,4 +112,5 @@ echo "*** Computing region counts..."
 python scripts/compute_region_counts.py \
     -r out/identified_regions \
     -o out/ko_expression \
-    --coverage_dir data/coverage_arrays
+    --coverage_dir data/coverage_arrays \
+    --para_coverage_dir data/coverage_arrays_parabacteroides
