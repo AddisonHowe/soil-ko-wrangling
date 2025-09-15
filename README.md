@@ -200,15 +200,15 @@ Taking stock, we now have for each KO a set of representative amino acid sequenc
 We can merge all representative sequences into a single file for convenience, and map the sequence identifiers (`seqid`) to their assigned KO.
 
 ```bash
-> data/all_kos_rep.faa
+> <outdir>/all_kos_rep.faa
 for ko in $(ls data/kos); do 
     echo $ko
-    cat data/kos/$ko/${ko}_rep.faa >> data/all_kos_rep.faa
+    cat data/kos/$ko/${ko}_rep.faa >> <outdir>/all_kos_rep.faa
 done
-awk -F' ' '/^>/ {print substr($1,2), $2}' data/all_kos_rep.faa > data/seqid_to_ko.txt
+awk -F' ' '/^>/ {print substr($1,2), $2}' <outdir>/all_kos_rep.faa > <outdir>/seqid_to_ko.txt
 ```
 
-The script `scripts/build_ko_info.py` produces a tsv file `data/ko_information.tsv` with information compiled from the fetches KO files.
+The script `scripts/build_ko_info.py` produces a tsv file `data/ko_information.tsv` with information compiled from the fetched KO files.
 
 ```bash
 python scripts/build_ko_info_file.py -i data/ko_list.txt -d data/ko_info -o data/ko_information.tsv
