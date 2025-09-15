@@ -3,6 +3,23 @@
 SKIP_GENOME_DOWNLOAD=true
 SKIP_KO_DOWNLOAD=true
 
+EVALUE_THRESH_DEFAULT=1e-5
+
+if [ "$#" -eq 3 ]; then
+    outdir=$1
+    pident_thresh=$2
+    evalue_thresh=$3
+elif [ "$#" -eq 2 ]; then
+    outdir=$1
+    pident_thresh=$2
+    evalue_thresh=$EVALUE_THRESH_DEFAULT
+else
+    echo "Usage: $0 outdir pident_thresh [evalue_thresh=1e-5]"
+    exit 1
+fi
+
+mkdir -p $outdir
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~  Step 0: Obtain contaminant genomes and annotations          ~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -59,25 +76,25 @@ awk -F' ' '/^>/ {print substr($1,2), $2}' data/all_kos_rep.faa > data/seqid_to_k
 echo "**************  Step 2  ***************"
 
 echo "*** Building diamond database..."
-./scripts/build_diamond_db.sh
+./scripts/build_diamond_db.sh $outdir
 
 echo "*** Running diamond..."
-dbdir=out/diamond_db
+dbdir=${outdir}/diamond_db
 for ko in $(cat data/ko_list.txt); do 
     if [[ -d data/kos/$ko ]]; then 
         echo $ko
         for db in ${dbdir}/*; do
             taxid=$(basename $db .dmnd)
-            ./scripts/run_diamond.sh $taxid $ko
+            ./scripts/run_diamond.sh $taxid $ko $outdir $evalue_thresh $pident_thresh
         done
     fi
 done
 
 echo "*** Merging diamond results..."
-./scripts/merge_diamond_results.sh
+./scripts/merge_diamond_results.sh $outdir
 
 echo "*** Building lists of diamond hits..."
-./scripts/get_diamond_hits.sh
+./scripts/get_diamond_hits.sh $outdir
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~  Step 3: Associate regions of interest to a unique KO        ~~~#
@@ -85,7 +102,9 @@ echo "*** Building lists of diamond hits..."
 echo "**************  Step 3  ***************"
 
 echo "*** Identifying top diamond hits..."
-python scripts/filter_top_diamond_hits.py
+python scripts/filter_top_diamond_hits.py \
+    -i ${outdir}/dmnd_combined.tsv \
+    -o ${outdir}/dmnd_combined_top_hits.tsv
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~  Step 4: Locate regions of interest in contaminant genomes   ~~~#
@@ -93,7 +112,7 @@ python scripts/filter_top_diamond_hits.py
 echo "**************  Step 4  ***************"
 
 echo "*** Locating regions..."
-./scripts/run_all_locate_regions_in_genome.sh
+./scripts/run_all_locate_regions_in_genome.sh $outdir
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~  Step 5: Compute avg read depth at each region of interest   ~~~#
@@ -102,7 +121,7 @@ echo "**************  Step 5  ***************"
 
 echo "*** Computing region counts..."
 python scripts/compute_region_counts.py \
-    -r out/identified_regions \
-    -o out/ko_expression \
+    -r ${outdir}/identified_regions \
+    -o ${outdir}/ko_expression \
     --coverage_dir data/coverage_arrays \
     --para_coverage_dir data/coverage_arrays_parabacteroides

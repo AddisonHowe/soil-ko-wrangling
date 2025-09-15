@@ -37,7 +37,7 @@ The full processing pipeline is contained in and can be run by executing the fol
 
 ```bash
 conda activate <env-name>
-./scripts/run_full_pipeline.sh
+./scripts/run_full_pipeline.sh <outdir> <pident_thresh> <evalue_thresh>
 ```
 
 ## Processing steps
@@ -54,6 +54,7 @@ sh scripts/move_downloaded_data.sh
 ```
 
 #### Caveats
+
 ##### Caveat 1: E. coli spike-in
 
 The spike-in genomes must be handled slightly differently, before proceeding.
@@ -219,34 +220,37 @@ We can now search the contaminant genomes for the KO-associated sequences using 
 First, we construct a diamond database per genome. (Recall, we use the taxid to index each genome.)
 
 ```bash
-./scripts/build_diamond_db.sh
+./scripts/build_diamond_db.sh <outdir>
 ```
 
-This will create and populate a directory `out/diamond_db` with a diamond database file per taxid: `<taxid>.dmnd`.
+This will create and populate a directory `<outdir>/diamond_db` with a diamond database file per taxid: `<taxid>.dmnd`.
 Once the databases are constructed, we can query the genomes for the representative sequences, as follows:
 
 ```bash
 taxid=<TAXID>
 ko=<KO>
-./scripts/run_diamond.sh ${taxid} ${ko}
+outdir=<OUTDIR>
+evalue_thresh=1e-5
+pident_thresh=50
+./scripts/run_diamond.sh ${taxid} ${ko} ${outdir} ${evalue_thresh} ${pident_thresh}
 
 # For all KOs and all genomes:
-dbdir=out/diamond_db
+dbdir=<outdir>/diamond_db
 for ko in $(cat data/ko_list.txt); do 
     if [[ -d data/kos/$ko ]]; then 
         echo $ko
         for db in ${dbdir}/*; do
             taxid=$(basename $db .dmnd)
-            ./scripts/run_diamond.sh $taxid $ko
+            ./scripts/run_diamond.sh $taxid $ko $evalue_thresh $pident_thresh
         done
     fi
 done
 ```
 
-The resulting files are stored as `out/diamond_res/<ko>/<taxid>_hits.tsv` and have the following structure:
+The resulting files are stored as `<outdir>/diamond_res/<ko>/<taxid>_hits.tsv` and have the following structure:
 
 ```txt
-# Example file: out/diamond_res/K00370/305_hits.tsv
+# Example file: <outdir>/diamond_res/K00370/305_hits.tsv
 
 ecos:EC958_1735   WP_075468174.1  65.1  1247  408  9   42  1275  1  1233  0.0  1731
 sef:UMN798_1652   WP_075468174.1  63.7  750   250  6   1   738   1  740   0.0  1029
@@ -265,7 +269,7 @@ The first column `qseqid` is the ID of the query (species and associated gene ID
 The second column `sseqid` is the ID of the subject sequence identified in the searched contaminant genome.
 We want to identify these sequences so that we can examine their average read depth.
 For ease of downstream processing, we can concatenate these files into a single file, with additional columns `taxid` and `ko`.
-The following script constructs this combined file and saves it as `out/dmnd_combined.tsv`.
+The following script constructs this combined file and saves it as `<outdir>/dmnd_combined.tsv`.
 
 ```bash
 ./scripts/merge_diamond_results.sh
@@ -274,13 +278,13 @@ The following script constructs this combined file and saves it as `out/dmnd_com
 Finally, the following script populates a directory `diamond_hits` with the same structure as `diamond_res`, with text files giving the set of seqids found via diamond, for each KO and contaminant genome.
 
 ```bash
-./scripts/get_diamond_hits.sh
+./scripts/get_diamond_hits.sh <outdir>
 ```
 
 The resulting output looks as follows:
 
 ```txt
-# Example file: out/diamond_hits/K00370/305_res_unique.txt
+# Example file: <outdir>/diamond_hits/K00370/305_res_unique.txt
 
 WP_075463358.1
 WP_075465178.1
@@ -297,10 +301,10 @@ In this case, we select the best diamond hit by first minimizing the `evalue` fi
 The following script performs this filtering step:
 
 ```bash
-python scripts/filter_top_diamond_hits.py
+python scripts/filter_top_diamond_hits.py -i <outdir>/dmnd_combined.tsv -o <outdir>/dmnd_combined_top_hits.tsv
 ```
 
-The resulting file is stored as `out/dmnd_combined_top_hits.tsv`, and defines a unique mapping from contaminant genes to an assigned KO.
+The resulting file is stored as `<outdir>/dmnd_combined_top_hits.tsv`, and defines a unique mapping from contaminant genes to an assigned KO.
 
 
 ### Step 4: Locating regions of interest within the contaminant genomes
@@ -314,15 +318,15 @@ The python script `scripts/locate_regions_in_genome.py` processes one contaminan
 python scripts/locate_regions_in_genome.py \
         -t <taxid> \
         -a data/genomes/<taxid>/ncbi_data/<accnum>/genomic.gff \
-        -d out/dmnd_combined_top_hits.tsv \
-        -o out/identified_regions
+        -d <outdir>/dmnd_combined_top_hits.tsv \
+        -o <outdir>/identified_regions
 ```
 
-Running the script `scripts/run_all_locate_regions_in_genome.sh` will result in a number of files in the directory `out/identified_regions`, each corresponding to a contaminant genome.
+Running the script `scripts/run_all_locate_regions_in_genome.sh` will result in a number of files in the directory `<outdir>/identified_regions`, each corresponding to a contaminant genome.
 As an example:
 
 ```txt
-# Example file: out/identified_regions/identified_regions_305.tsv
+# Example file: <outdir>/identified_regions/identified_regions_305.tsv
 
 ko      name            start    stop     desc
 K15864  YP_005227361.1  3049987  3051327  ID=cds-YP_005227361.1;Dbxref=GenBank:YP_005227361.1...;Name=YP_005227361.1;...
@@ -347,8 +351,8 @@ The following script performs this computation per sample, merging results for e
 
 ```bash
 python scripts/compute_region_counts.py \
-    -r out/identified_regions \
-    -o out/ko_expression \
+    -r <outdir>/identified_regions \
+    -o <outdir>/ko_expression \
     --coverage_dir data/coverage_arrays
 ```
 
@@ -357,7 +361,7 @@ Each row corresponds to a region of interest identified within one of the contam
 It provides the start and stop position on the contaminant genome, the sequence length, average read depth, and max depth.
 
 ```text
-# Example file: out/ko_expression/coverage_Soil3_CE_239_-7_CHL_T9.csv
+# Example file: <outdir>/ko_expression/coverage_Soil3_CE_239_-7_CHL_T9.csv
 
 taxid,ko,name,start,stop,seq_length,avg_depth,max_depth,desc
 267608,K15864,WP_011004281.1,1244384,1244995,611,1.0,1.0,ID=cds-WP_011004281.1...
@@ -380,7 +384,7 @@ We now consider approaches for downstream analysis of these files.
 For any given sample, we can now specify a contaminant genome, and query the average depth of reads at any of the regions of interest that were associated with a KO.
 
 ```txt
-# Example lines from file out/ko_expression/coverage_Soil3_CE_239_-7_CHL_T9.csv
+# Example lines from file <outdir>/ko_expression/coverage_Soil3_CE_239_-7_CHL_T9.csv
 
 267608,K15864,WP_011004281.1,1244384,1244995,611,1.0,1.0,ID=cds-WP_011004281.1...
 267608,K15864,WP_043876895.1,1884433,1885926,1493,10.969859343603483,30.0,"ID=...

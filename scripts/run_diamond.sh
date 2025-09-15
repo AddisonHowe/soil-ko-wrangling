@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 taxid ko"
+if [ "$#" -ne 5 ]; then
+    echo "Usage: $0 taxid ko outdir evalue_thresh pident_thresh"
     exit 1
 fi
 
 taxid=$1
 ko=$2
+outdir=$3
+evalue_thresh=$4  # 1e-5
+pident_thresh=$5  # 50
 
 queryfile="data/kos/${ko}/${ko}_rep.faa"
-dbfile="out/diamond_db/${taxid}.dmnd"
-outdir="out/diamond_res/${ko}"
+dbfile="${outdir}/diamond_db/${taxid}.dmnd"
+outdirbase="${outdir}/diamond_res/${ko}"
 outfname="${taxid}_hits.tsv"
 
 if [[ ! -f $queryfile ]]; then
@@ -21,13 +24,14 @@ elif [[ ! -f $dbfile ]]; then
     exit 1
 fi
 
-mkdir -p $outdir
+mkdir -p $outdirbase
 
 diamond blastp \
     --query ${queryfile} \
     --db "$dbfile" \
-    --out "${outdir}/${outfname}" \
+    --out "${outdirbase}/${outfname}" \
     --outfmt 6 \
-    --evalue 1e-5 \
+    --evalue ${evalue_thresh} \
+    --id ${pident_thresh} \
     --max-target-seqs 1 \
     --quiet

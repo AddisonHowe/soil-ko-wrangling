@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
-genomesdir="data/genomes"
-outdir="out/diamond_db"
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 outdir"
+    exit 1
+fi
 
-mkdir -p $outdir
+outdir=$1
+
+genomesdir="data/genomes"
+dmddbdir="${outdir}/diamond_db"
+
+mkdir -p $dmddbdir
 
 awk -F ','  'NR > 1 { print $0 }' data/taxid_to_accnum.csv | while IFS=',' read -r taxid accnum; do
     if [[ $accnum == NOTFOUND ]]; then
@@ -12,5 +19,5 @@ awk -F ','  'NR > 1 { print $0 }' data/taxid_to_accnum.csv | while IFS=',' read 
     echo $taxid $accnum
     f=${genomesdir}/${taxid}/ncbi_data/${accnum}/protein.faa
     subdir=${taxid}
-    diamond makedb --in "$f" -d "${outdir}/${subdir}" --quiet
+    diamond makedb --in "$f" -d "${dmddbdir}/${subdir}" --quiet
 done

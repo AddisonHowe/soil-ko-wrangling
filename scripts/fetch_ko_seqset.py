@@ -1,6 +1,5 @@
 import os, sys
 import time
-import numpy as np
 import argparse
 import tqdm as tqdm
 from Bio.KEGG import REST

@@ -3,21 +3,17 @@ import os, sys
 import tqdm as tqdm
 import numpy as np
 import pandas as pd
-import time
 
-REGIONS_DIR = "out/identified_regions"
-COVERAGE_DIR = "data/coverage_arrays"
-COVERAGE_DIR_PARA = "data/coverage_arrays_parabacteroides"
 TAXID_TO_ACCREF_FPATH = "data/taxid_to_accnum.csv"
 TAXID_TO_SCAFFOLD_FPATH = "data/taxid_to_scaffold.csv"
 
 
 def parse_args(args):
     parser = argparse.ArgumentParser()
-    parser.add_argument("-r", "--regions_dir", type=str, default=REGIONS_DIR)
-    parser.add_argument("-o", "--outdir", type=str, default="out/regions")
-    parser.add_argument("--coverage_dir", type=str, default=COVERAGE_DIR)
-    parser.add_argument("--para_coverage_dir", type=str, default=COVERAGE_DIR_PARA)
+    parser.add_argument("-r", "--regions_dir", type=str, required=True)
+    parser.add_argument("-o", "--outdir", type=str, required=True)
+    parser.add_argument("--coverage_dir", type=str, required=True)
+    parser.add_argument("--para_coverage_dir", type=str, required=True)
     return parser.parse_args(args)
 
 

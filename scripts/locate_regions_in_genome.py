@@ -1,7 +1,6 @@
 import argparse
 import os, sys
 import csv
-import numpy as np
 import pandas as pd
 
 
@@ -80,7 +79,6 @@ def main(args):
             name = d[annotation_key]
             if taxid == 2849180:
                 name += ":" + row[0]
-                print(name)
             for ko in ko_to_region_ids:
                 if name in ko_to_region_ids[ko]:
                     start = row[3]
