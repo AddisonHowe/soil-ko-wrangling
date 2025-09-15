@@ -63,12 +63,12 @@ for ko in $(cat data/ko_list.txt); do
 done
 
 echo "*** Merging all representative sequences across KOs into one file..."
-> data/all_kos_rep.faa
+> ${outdir}/all_kos_rep.faa
 for ko in $(ls data/kos); do 
     echo $ko
-    cat data/kos/$ko/${ko}_rep.faa >> data/all_kos_rep.faa
+    cat data/kos/$ko/${ko}_rep.faa >> ${outdir}/all_kos_rep.faa
 done
-awk -F' ' '/^>/ {print substr($1,2), $2}' data/all_kos_rep.faa > data/seqid_to_ko.txt
+awk -F' ' '/^>/ {print substr($1,2), $2}' ${outdir}/all_kos_rep.faa > ${outdir}/seqid_to_ko.txt
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~  Step 2: Run diamond to find near sequences                  ~~~#
