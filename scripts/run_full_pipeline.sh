@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-eval "$($CONDA_EXE shell.bash hook)"
-
 SKIP_GENOME_DOWNLOAD=true
 SKIP_KO_DOWNLOAD=true
 
@@ -9,7 +7,6 @@ SKIP_KO_DOWNLOAD=true
 #~~~  Step 0: Obtain contaminant genomes and annotations          ~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 echo "**************  Step 0  ***************"
-conda activate ncbienv
 
 if [ "$SKIP_GENOME_DOWNLOAD" = true ]; then
     echo "*** Skipping genome downloads!"
@@ -26,7 +23,6 @@ sh scripts/extract_genome_cds_and_proteins.sh
 #~~~  Step 1: Obtain KO information and representative sequences  ~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 echo "**************  Step 1  ***************"
-conda activate bioenv
 
 if [ "$SKIP_KO_DOWNLOAD" = true ]; then
     echo "*** Skipping KO downloads!"
@@ -61,7 +57,6 @@ awk -F' ' '/^>/ {print substr($1,2), $2}' data/all_kos_rep.faa > data/seqid_to_k
 #~~~  Step 2: Run diamond to find near sequences                  ~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 echo "**************  Step 2  ***************"
-conda activate bioenv
 
 echo "*** Building diamond database..."
 ./scripts/build_diamond_db.sh
@@ -88,7 +83,6 @@ echo "*** Building lists of diamond hits..."
 #~~~  Step 3: Associate regions of interest to a unique KO        ~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 echo "**************  Step 3  ***************"
-conda activate bioenv
 
 echo "*** Identifying top diamond hits..."
 python scripts/filter_top_diamond_hits.py
@@ -97,7 +91,6 @@ python scripts/filter_top_diamond_hits.py
 #~~~  Step 4: Locate regions of interest in contaminant genomes   ~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 echo "**************  Step 4  ***************"
-conda activate bioenv
 
 echo "*** Locating regions..."
 ./scripts/run_all_locate_regions_in_genome.sh
@@ -106,7 +99,6 @@ echo "*** Locating regions..."
 #~~~  Step 5: Compute avg read depth at each region of interest   ~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 echo "**************  Step 5  ***************"
-conda activate bioenv
 
 echo "*** Computing region counts..."
 python scripts/compute_region_counts.py \

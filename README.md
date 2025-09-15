@@ -27,11 +27,8 @@ Our approach is outlined as follows:
 ## Environment setup
 
 ```bash
-conda create -n ncbienv
-```
-
-```bash
-conda create -n bioenv
+conda env create -n <env-name> -f environment.yml
+conda activate <env-name>
 ```
 
 ## Full pipeline commands
@@ -39,6 +36,7 @@ conda create -n bioenv
 The full processing pipeline is contained in and can be run by executing the following script:
 
 ```bash
+conda activate <env-name>
 ./scripts/run_full_pipeline.sh
 ```
 

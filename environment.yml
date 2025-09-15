@@ -1,0 +1,15 @@
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - numpy
+  - pandas
+  - matplotlib
+  - biopython
+  - ncbi-datasets-cli
+  - bioconda::diamond
+  - bioconda::gffread
+  - bioconda::cd-hit
+  - tqdm
+  - ipykernel
+  
