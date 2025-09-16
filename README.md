@@ -40,6 +40,9 @@ conda activate <env-name>
 ./scripts/run_full_pipeline.sh <outdir> <pident_thresh> <evalue_thresh>
 ```
 
+Note that if a different `pident_thresh` value is desired for each `taxid`, `ko` pair, the path to a space-separated file with rows of the form `<taxid> <ko> <pident_thresh>` may be passed as input instead of a numeric value.
+
+
 ## Processing steps
 
 ### Step 0: Aquiring contaminant genomes and annotations

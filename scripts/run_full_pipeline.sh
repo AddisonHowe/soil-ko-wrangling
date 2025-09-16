@@ -18,6 +18,25 @@ else
     exit 1
 fi
 
+# Check if pident_thresh is a file
+if [[ -e $pident_thresh ]]; then
+    USE_PIDENT_FPATH=true
+    pident_fpath=$pident_thresh
+    pident_thresh=""
+    echo "*** Reading pident values from file $pident_fpath"
+    # Enable associative arrays
+    declare -A pident_table
+
+    # Read the file and populate the associative array
+    while read -r col1 col2 col3; do
+        key="${col1}_${col2}"   # combine first two columns into a key
+        pident_table["$key"]="$col3"
+    done < $pident_fpath
+else
+    USE_PIDENT_FPATH=false
+    pident_fpath=""
+fi
+
 mkdir -p $outdir
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -82,11 +101,17 @@ echo "*** Running diamond..."
 dbdir=${outdir}/diamond_db
 for ko in $(cat data/ko_list.txt); do 
     if [[ -d data/kos/$ko ]]; then 
-        echo $ko
+        printf "%s " "$ko"
         for db in ${dbdir}/*; do
             taxid=$(basename $db .dmnd)
+            if [[ $USE_PIDENT_FPATH -eq "true" ]]; then
+                lookup_key="${taxid}_${ko}"
+                pident_thresh=${pident_table[$lookup_key]}                
+            fi
+            printf "%s (pi=%.1f) " "$taxid" "$pident_thresh"
             ./scripts/run_diamond.sh $taxid $ko $outdir $evalue_thresh $pident_thresh
         done
+        printf "\n"
     fi
 done
 
